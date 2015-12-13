@@ -1,0 +1,9 @@
+db.url: jdbc:oracle:thin:@localhost:1521:xe
+db.driver: oracle.jdbc.driver.OracleDriver
+db.password:
+db.username:
+
+hibernate.dialect: org.hibernate.dialect.Oracle10gDialect
+hibernate.show_sql: true
+hibernate.hbm2ddl.auto:
+entitymanager.packagesToScan: com.tnosal.model
