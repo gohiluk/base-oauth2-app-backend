@@ -1,4 +1,4 @@
-package com.tnosal.model;
+package com.tnosal.domain;
 
 
 import javax.persistence.*;

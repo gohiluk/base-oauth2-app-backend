@@ -1,11 +1,10 @@
 package com.tnosal.dao;
 
-import com.tnosal.model.Authority;
+import com.tnosal.domain.Authority;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Expression;
-import org.hibernate.criterion.Projections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -35,5 +34,15 @@ public class AuthorityDao {
             return Optional.empty();
         }
         return Optional.of(((Authority)list.get(0)).getId());
+    }
+
+    public Optional<Authority> getAuthorityByName(String name) {
+        Criteria criteria = getSessionFactory().createCriteria(Authority.class);
+        criteria.add(Expression.eq("name", name));
+        List list = criteria.list();
+        if (list.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of((Authority)list.get(0));
     }
 }

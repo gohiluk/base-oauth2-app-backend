@@ -1,6 +1,8 @@
 package com.tnosal.controller;
 
-import com.tnosal.model.User;
+import com.tnosal.binder.UserBinder;
+import com.tnosal.domain.User;
+import com.tnosal.model.UserDTO;
 import com.tnosal.response.BaseResponse;
 import com.tnosal.service.RegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +22,10 @@ public class RegisterController {
     private RegisterService registerService;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public BaseResponse registerUser(@RequestBody User user) {
+    public BaseResponse registerUser(@RequestBody UserDTO userDTO) {
+        User user = UserBinder.bindUser(userDTO);
 
-        registerService.setIdsForAuthorityIfExists(user);
+        registerService.setUserRole(user);
         registerService.saveUser(user);
 
         return new BaseResponse().setSuccessStatus();
