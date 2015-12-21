@@ -1,15 +1,10 @@
 package com.tnosal.dao;
 
 import com.tnosal.domain.User;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Expression;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.hibernate.SessionFactory;
-
-import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  * Created by gohilukk on 2015-11-11.
@@ -18,34 +13,23 @@ import java.util.List;
 @Transactional
 public class UserDao {
 
-    @Autowired
-    private SessionFactory sessionFactory;
-
-    private Session getSessionFactory() {
-        return sessionFactory.getCurrentSession();
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public void addUser(User user) {
-        getSessionFactory().save(user);
+        entityManager.persist(user);
     }
 
     public User findByEmail(String email) {
-        Criteria criteria = getSessionFactory().createCriteria(User.class);
-        criteria.add(Expression.eq("email", email));
-        List list = criteria.list();
-        if (list != null) {
-            return (User)list.get(0);
-        }
-        return null;
+        return entityManager.createQuery("SELECT i from User i where i.email = :email", User.class)
+                .setParameter("email", email)
+                .getSingleResult();
     }
 
     public User findByUsernameCaseInsensitive(String username) {
-        Criteria criteria = getSessionFactory().createCriteria(User.class);
-        criteria.add(Expression.eq("username", username));
-        List list = criteria.list();
-        if (list != null) {
-            return (User)list.get(0);
-        }
-        return null;
+        return (User) entityManager.createQuery(
+                "select i from User i where i.username = :username")
+                .setParameter("username", username)
+                .getSingleResult();
     }
 }

@@ -1,15 +1,11 @@
 package com.tnosal.dao;
 
 import com.tnosal.domain.Authority;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Expression;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -19,30 +15,18 @@ import java.util.Optional;
 @Transactional
 public class AuthorityDao {
 
-    @Autowired
-    private SessionFactory sessionFactory;
-
-    private Session getSessionFactory() {
-        return sessionFactory.getCurrentSession();
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public Optional<Long> getAuthorityIdByName(String name) {
-        Criteria criteria = getSessionFactory().createCriteria(Authority.class);
-        criteria.add(Expression.eq("name", name));
-        List list = criteria.list();
-        if (list.isEmpty()) {
-            return Optional.empty();
-        }
-        return Optional.of(((Authority)list.get(0)).getId());
+        return Optional.of(entityManager.createQuery("SELECT i from Authority i where i.name = :name", Authority.class)
+                .setParameter("name", name)
+                .getSingleResult().getId());
     }
 
     public Optional<Authority> getAuthorityByName(String name) {
-        Criteria criteria = getSessionFactory().createCriteria(Authority.class);
-        criteria.add(Expression.eq("name", name));
-        List list = criteria.list();
-        if (list.isEmpty()) {
-            return Optional.empty();
-        }
-        return Optional.of((Authority)list.get(0));
+        return Optional.of(entityManager.createQuery("SELECT i from Authority i where i.name = :name", Authority.class)
+                .setParameter("name", name)
+                .getSingleResult());
     }
 }
