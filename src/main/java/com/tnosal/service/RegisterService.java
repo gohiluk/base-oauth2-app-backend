@@ -43,6 +43,6 @@ public class RegisterService {
 
 
     public void saveUser(User user) {
-        userDao.addUser(user);
+        userDao.add(user);
     }
 }

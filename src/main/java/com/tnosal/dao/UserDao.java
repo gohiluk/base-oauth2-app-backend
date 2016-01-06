@@ -11,14 +11,10 @@ import javax.persistence.PersistenceContext;
  */
 @Repository
 @Transactional
-public class UserDao {
+public class UserDao extends Dao{
 
     @PersistenceContext
     private EntityManager entityManager;
-
-    public void addUser(User user) {
-        entityManager.persist(user);
-    }
 
     public User findByEmail(String email) {
         return entityManager.createQuery("SELECT i from User i where i.email = :email", User.class)

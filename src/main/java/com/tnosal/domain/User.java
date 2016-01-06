@@ -48,6 +48,9 @@ public class User {
             inverseJoinColumns = { @JoinColumn(name = "authority_id")} )
     private Set<Authority> authorities;
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    private Set<Car> cars;
+
     public Long getId() {
         return id;
     }
@@ -110,6 +113,14 @@ public class User {
 
     public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
+    }
+
+    public Set<Car> getCars() {
+        return cars;
+    }
+
+    public void setCars(Set<Car> cars) {
+        this.cars = cars;
     }
 
     @Override

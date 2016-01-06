@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Created by gohilukk on 2015-11-11.
  */
-@RequestMapping(value = "/api")
 @RestController
+@RequestMapping(value = "/api")
 public class RegisterController {
 
     @Autowired
