@@ -5,8 +5,17 @@ package com.tnosal.model;
  */
 public class CarDTO {
 
+    private Long id;
     private String name;
-    private byte [] picture;
+    private String base64String;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -16,11 +25,11 @@ public class CarDTO {
         this.name = name;
     }
 
-    public byte[] getPicture() {
-        return picture;
+    public String getBase64String() {
+        return base64String;
     }
 
-    public void setPicture(byte[] picture) {
-        this.picture = picture;
+    public void setBase64String(String base64String) {
+        this.base64String = base64String;
     }
 }

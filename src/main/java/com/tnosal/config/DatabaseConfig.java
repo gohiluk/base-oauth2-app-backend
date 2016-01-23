@@ -1,6 +1,8 @@
 package com.tnosal.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.embedded.FilterRegistrationBean;
+import org.springframework.boot.context.embedded.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -9,7 +11,10 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.multipart.support.MultipartFilter;
 
+import javax.servlet.MultipartConfigElement;
 import javax.sql.DataSource;
 import java.util.Properties;
 
@@ -37,6 +42,15 @@ public class DatabaseConfig {
     private String HIBERNATE_HBM2DDL_AUTO;
     @Value("${entitymanager.packagesToScan}")
     private String ENTITYMANAGER_PACKAGES_TO_SCAN;
+
+
+    @Bean(name = "multipartResolver")
+    public CommonsMultipartResolver multipartResolver() {
+        CommonsMultipartResolver multipartResolver
+                = new CommonsMultipartResolver();
+        return multipartResolver;
+    }
+
 
     @Bean
     public DataSource dataSource() {
