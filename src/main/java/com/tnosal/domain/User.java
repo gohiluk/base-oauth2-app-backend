@@ -48,7 +48,7 @@ public class User {
             inverseJoinColumns = { @JoinColumn(name = "authority_id")} )
     private Set<Authority> authorities;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private Set<Car> cars;
 
     public Long getId() {

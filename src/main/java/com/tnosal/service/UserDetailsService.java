@@ -35,7 +35,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 
         User userFromDatabase;
         if(lowercaseLogin.contains("@")) {
-            userFromDatabase = userDao.findByEmail(lowercaseLogin);
+            userFromDatabase = userDao.findByEmail2(lowercaseLogin);
         } else {
             userFromDatabase = userDao.findByUsernameCaseInsensitive(lowercaseLogin);
         }
@@ -52,8 +52,8 @@ public class UserDetailsService implements org.springframework.security.core.use
             grantedAuthorities.add(grantedAuthority);
         }
 
-        return new org.springframework.security.core.userdetails.User(userFromDatabase.getUsername(), userFromDatabase.getPassword(), grantedAuthorities);
-
+        //return new org.springframework.security.core.userdetails.User(userFromDatabase.getUsername(), userFromDatabase.getPassword(), grantedAuthorities);
+        return new com.tnosal.model.UserDetails(userFromDatabase.getId(), userFromDatabase.getUsername(), userFromDatabase.getPassword(), grantedAuthorities);
     }
 
 }

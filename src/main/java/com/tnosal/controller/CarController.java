@@ -3,6 +3,7 @@ package com.tnosal.controller;
 import com.tnosal.domain.Car;
 import com.tnosal.domain.User;
 import com.tnosal.model.CarDTO;
+import com.tnosal.model.UserDetails;
 import com.tnosal.response.BaseResponse;
 import com.tnosal.service.CarService;
 import com.tnosal.service.UserService;
@@ -27,8 +28,7 @@ public class CarController {
     @Autowired
     public CarService carService;
 
-    @RequestMapping(value = "/addCar", method = RequestMethod.POST)
-    //public BaseResponse addCar(@RequestBody CarDTO carDTO, OAuth2Authentication auth) {
+    @RequestMapping(value = "/cars-old", method = RequestMethod.POST)
     public BaseResponse addCar(@RequestParam("name")String name, @RequestParam("picture") MultipartFile picture, OAuth2Authentication auth) throws IOException {
 
         String username = auth.getUserAuthentication().getName();
@@ -39,24 +39,45 @@ public class CarController {
         car.setName(name);
         car.setPicture(picture.getBytes());
         car.setUser(user);
-        carService.saveCar(car);
+        //carService.saveCar(car, user);
+
+        return new BaseResponse().setSuccessStatus();
+    }
+
+    @RequestMapping(value = "/cars", method = RequestMethod.POST)
+    public BaseResponse addCar(@ModelAttribute CarDTO carDTO, OAuth2Authentication auth) throws IOException {
+
+        String username = auth.getUserAuthentication().getName();
+
+        User user = userService.loadUserByUsername(username);
+
+        carService.saveCar(carDTO, user);
 
         return new BaseResponse().setSuccessStatus();
     }
 
     @RequestMapping(value = "/getCars", method = RequestMethod.GET)
     public List<CarDTO> getCars(OAuth2Authentication auth) {
-        String username = auth.getUserAuthentication().getName();
-        User user = userService.loadUserByUsername(username);
 
-        List<CarDTO> allByUserId = carService.getAllByUserId(user.getId());
+        Long userId = ((UserDetails)auth.getUserAuthentication().getPrincipal()).getId();
+        List<CarDTO> allByUserId = carService.getAllByUserId(userId);
 
         return allByUserId;
     }
 
     @RequestMapping(value = "/cars/{id}", method = RequestMethod.GET)
-    public CarDTO getCar(@PathVariable("id") Long id, OAuth2Authentication auth) {
+    public CarDTO getCar(@PathVariable("id") String id, OAuth2Authentication auth) {
+        String username = auth.getUserAuthentication().getName();
+        User user = userService.loadUserByUsername(username);
 
+        return carService.getCarByIdAndUserId(Long.parseLong(id), user.getId());
     }
 
+    @RequestMapping(value = "/cars/{id}", method = RequestMethod.POST)
+    //public CarDTO updateCar(@PathVariable("id") String id, @RequestParam("name")String name, @RequestParam(value = "picture", required = false) MultipartFile picture, OAuth2Authentication auth) {
+    public BaseResponse updateCar(@PathVariable("id") String id, @ModelAttribute CarDTO carDTO, OAuth2Authentication auth) throws IOException {
+        carDTO.setId(Long.parseLong(id));
+        carService.updateCar(carDTO);
+        return null;
+    }
 }

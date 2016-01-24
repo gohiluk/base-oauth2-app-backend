@@ -26,4 +26,12 @@ public class Dao {
     public <T> List getAll(final Class<T> clazz) {
         return entityManager.createQuery(String.format(QUERY_SELECT_ALL, clazz.getSimpleName())).getResultList();
     }
+
+    public <T, ID> T getById(final Class<T> clazz, final ID id) {
+        return entityManager.find(clazz, id);
+    }
+
+    public <T> T merge(final T object) {
+        return entityManager.merge(object);
+    }
 }
