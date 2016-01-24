@@ -51,9 +51,9 @@ public class CarController {
 
         User user = userService.loadUserByUsername(username);
 
-        carService.saveCar(carDTO, user);
+        Long id = carService.saveCar(carDTO, user);
 
-        return new BaseResponse().setSuccessStatus();
+        return new BaseResponse().setSuccessStatus().setCreatedObjectId(id);
     }
 
     @RequestMapping(value = "/getCars", method = RequestMethod.GET)

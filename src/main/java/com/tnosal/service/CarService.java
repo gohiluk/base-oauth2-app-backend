@@ -22,7 +22,7 @@ public class CarService {
     @Autowired
     public CarDao carDao;
 
-    public long saveCar(CarDTO carDTO, User user) throws IOException {
+    public Long saveCar(CarDTO carDTO, User user) throws IOException {
         Car car = new Car();
         car.setName(carDTO.getName());
         car.setPicture(carDTO.getPicture().getBytes());

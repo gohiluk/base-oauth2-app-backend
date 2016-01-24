@@ -15,9 +15,7 @@ CREATE SEQUENCE CAR_SEQ
 CREATE TABLE SERVICE (
   id NUMBER NOT NULL PRIMARY KEY,
   car_id NUMBER NOT NULL,
-  name VARCHAR(50) NOT NULL,
   description VARCHAR(50),
-  password VARCHAR(500),
   price NUMBER(5,2),
   mileage NUMBER(10,2),
   service_date DATE,

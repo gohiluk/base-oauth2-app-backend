@@ -9,6 +9,8 @@ public class BaseResponse {
 
     private String status;
 
+    private Long id;
+
     public String getStatus() {
         return status;
     }
@@ -17,8 +19,21 @@ public class BaseResponse {
         this.status = status;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public BaseResponse setSuccessStatus() {
         this.status = STATUS_SUCCESS;
+        return this;
+    }
+
+    public BaseResponse setCreatedObjectId(Long id) {
+        this.id = id;
         return this;
     }
 }

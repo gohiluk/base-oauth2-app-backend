@@ -1,6 +1,7 @@
 package com.tnosal.domain;
 
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  * Created by gohilukk on 2016-01-06.
@@ -14,7 +15,7 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "CarSequence")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
     private User user;
 
@@ -22,6 +23,9 @@ public class Car {
 
     @Lob
     private byte [] picture;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "car")
+    private Set<Service> services;
 
     public Long getId() {
         return id;
