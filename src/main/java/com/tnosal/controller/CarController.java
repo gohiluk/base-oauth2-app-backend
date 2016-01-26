@@ -78,6 +78,6 @@ public class CarController {
     public BaseResponse updateCar(@PathVariable("id") String id, @ModelAttribute CarDTO carDTO, OAuth2Authentication auth) throws IOException {
         carDTO.setId(Long.parseLong(id));
         carService.updateCar(carDTO);
-        return null;
+        return new BaseResponse().setSuccessStatus();
     }
 }

@@ -1,37 +1,20 @@
-package com.tnosal.domain;
+package com.tnosal.model;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 
 /**
- * Created by gohilukk on 2016-01-24.
+ * Created by gohilukk on 2016-01-26.
  */
-@Entity
-@Table(name="SERVICE")
-@SequenceGenerator(name="ServiceSequence", sequenceName = "SERVICE_SEQ")
-public class Service {
+public class ServiceDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "ServiceSequence")
     private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="car_id")
-    private Car car;
-
+    private Long carId;
     private String description;
-
     private BigDecimal price;
-
     private BigInteger mileage;
-
-    @Column(name = "service_date")
     private Date serviceDate;
-
-    @Lob
-    private byte [] picture;
 
     public Long getId() {
         return id;
@@ -41,12 +24,12 @@ public class Service {
         this.id = id;
     }
 
-    public Car getCar() {
-        return car;
+    public Long getCarId() {
+        return carId;
     }
 
-    public void setCar(Car car) {
-        this.car = car;
+    public void setCarId(Long carId) {
+        this.carId = carId;
     }
 
     public String getDescription() {
@@ -79,13 +62,5 @@ public class Service {
 
     public void setServiceDate(Date serviceDate) {
         this.serviceDate = serviceDate;
-    }
-
-    public byte[] getPicture() {
-        return picture;
-    }
-
-    public void setPicture(byte[] picture) {
-        this.picture = picture;
     }
 }

@@ -3,6 +3,7 @@ package com.tnosal.dao;
 import com.mysema.query.jpa.JPQLQuery;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.tnosal.domain.Car;
+import com.tnosal.domain.Service;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
