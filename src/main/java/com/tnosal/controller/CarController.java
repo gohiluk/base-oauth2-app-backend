@@ -2,6 +2,7 @@ package com.tnosal.controller;
 
 import com.tnosal.domain.Car;
 import com.tnosal.domain.User;
+import com.tnosal.exception.NotFoundException;
 import com.tnosal.model.CarDTO;
 import com.tnosal.model.UserDetails;
 import com.tnosal.response.BaseResponse;
@@ -66,11 +67,10 @@ public class CarController {
     }
 
     @RequestMapping(value = "/cars/{id}", method = RequestMethod.GET)
-    public CarDTO getCar(@PathVariable("id") String id, OAuth2Authentication auth) {
-        String username = auth.getUserAuthentication().getName();
-        User user = userService.loadUserByUsername(username);
+    public CarDTO getCar(@PathVariable("id") String id, OAuth2Authentication auth) throws NotFoundException {
+        Long userId = ((UserDetails)auth.getUserAuthentication().getPrincipal()).getId();
 
-        return carService.getCarByIdAndUserId(Long.parseLong(id), user.getId());
+        return carService.getCarByIdAndUserId(Long.parseLong(id), userId);
     }
 
     @RequestMapping(value = "/cars/{id}", method = RequestMethod.POST)

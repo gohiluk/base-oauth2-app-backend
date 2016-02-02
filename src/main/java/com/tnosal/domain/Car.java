@@ -1,6 +1,7 @@
 package com.tnosal.domain;
 
 import javax.persistence.*;
+import java.math.BigInteger;
 import java.util.Set;
 
 /**
@@ -23,6 +24,8 @@ public class Car {
 
     @Lob
     private byte [] picture;
+
+    private BigInteger mileage;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "car")
     private Set<Service> services;
@@ -57,5 +60,21 @@ public class Car {
 
     public void setPicture(byte[] picture) {
         this.picture = picture;
+    }
+
+    public Set<Service> getServices() {
+        return services;
+    }
+
+    public void setServices(Set<Service> services) {
+        this.services = services;
+    }
+
+    public BigInteger getMileage() {
+        return mileage;
+    }
+
+    public void setMileage(BigInteger mileage) {
+        this.mileage = mileage;
     }
 }

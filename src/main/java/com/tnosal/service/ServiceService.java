@@ -22,6 +22,8 @@ public class ServiceService {
     @Autowired
     public CarDao carDao;
 
+    private static final int FIRST_VALUE_LESSER = -1;
+
     public void addService(ServiceDTO serviceDTO, Long userId) throws Exception {
         Car car = carDao.getCarByIdAndUserId(serviceDTO.getCarId(), userId);
 
@@ -32,6 +34,10 @@ public class ServiceService {
             service.setServiceDate(serviceDTO.getServiceDate());
             service.setPrice(serviceDTO.getPrice());
             service.setCar(car);
+
+            if (car.getMileage().compareTo(service.getMileage()) == FIRST_VALUE_LESSER) {
+                car.setMileage(service.getMileage());
+            }
 
             serviceDao.add(service);
         } else {
@@ -45,6 +51,7 @@ public class ServiceService {
         List<ServiceDTO> serviceDTOs = new ArrayList<>();
         for (com.tnosal.domain.Service service : allByCarId) {
             ServiceDTO serviceDTO = new ServiceDTO();
+            serviceDTO.setId(service.getId());
             serviceDTO.setDescription(service.getDescription());
             serviceDTO.setServiceDate(service.getServiceDate());
             serviceDTO.setMileage(service.getMileage());
@@ -52,5 +59,34 @@ public class ServiceService {
             serviceDTOs.add(serviceDTO);
         }
         return serviceDTOs;
+    }
+
+    public ServiceDTO getServiceByIdAndCarId(Long id, Long carId, Long userId) {
+        //TODO check if user ask for his services
+        com.tnosal.domain.Service service = serviceDao.getServiceByIdAndCarId(id, carId);
+        ServiceDTO serviceDTO = new ServiceDTO();
+        serviceDTO.setId(service.getId());
+        serviceDTO.setPrice(service.getPrice());
+        serviceDTO.setMileage(service.getMileage());
+        serviceDTO.setServiceDate(service.getServiceDate());
+        serviceDTO.setDescription(service.getDescription());
+        serviceDTO.setCarId(carId);
+        return serviceDTO;
+    }
+
+    public void updateService(ServiceDTO serviceDTO) {
+        com.tnosal.domain.Service service = serviceDao.getById(com.tnosal.domain.Service.class, serviceDTO.getId());
+        service.setDescription(serviceDTO.getDescription());
+        service.setServiceDate(serviceDTO.getServiceDate());
+        service.setPrice(serviceDTO.getPrice());
+        service.setMileage(serviceDTO.getMileage());
+
+        Car car = service.getCar();
+
+        if (car.getMileage().compareTo(service.getMileage()) == FIRST_VALUE_LESSER) {
+            car.setMileage(service.getMileage());
+        }
+
+        serviceDao.merge(service);
     }
 }

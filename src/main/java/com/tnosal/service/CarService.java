@@ -3,6 +3,7 @@ package com.tnosal.service;
 import com.tnosal.dao.CarDao;
 import com.tnosal.domain.Car;
 import com.tnosal.domain.User;
+import com.tnosal.exception.NotFoundException;
 import com.tnosal.model.CarDTO;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.apache.tomcat.util.codec.binary.StringUtils;
@@ -38,17 +39,22 @@ public class CarService {
             carDTO.setId(car.getId());
             carDTO.setName(car.getName());
             carDTO.setBase64String(convertByteToBase64String(car.getPicture()));
+            carDTO.setMileage(car.getMileage());
             cars.add(carDTO);
         }
         return cars;
     }
 
-    public CarDTO getCarByIdAndUserId(Long id, Long userId) {
+    public CarDTO getCarByIdAndUserId(Long id, Long userId) throws NotFoundException {
         Car car = carDao.getCarByIdAndUserId(id, userId);
+        if (car == null) { //uzytkownik poprosil o nie swoj samochod
+            throw new NotFoundException();
+        }
         CarDTO carDTO = new CarDTO();
         carDTO.setId(car.getId());
         carDTO.setName(car.getName());
         carDTO.setBase64String(convertByteToBase64String(car.getPicture()));
+        carDTO.setMileage(car.getMileage());
         return carDTO;
     }
 

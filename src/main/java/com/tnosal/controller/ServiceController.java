@@ -22,7 +22,7 @@ public class ServiceController {
 
     @RequestMapping(value = "/service", method = RequestMethod.GET)
     public List<ServiceDTO> getServices(@RequestParam(value = "carId", required = true) String carId, OAuth2Authentication auth) {
-        Long userId = ((UserDetails)auth.getUserAuthentication().getPrincipal()).getId();
+        Long userId = ((UserDetails) auth.getUserAuthentication().getPrincipal()).getId();
         List<ServiceDTO> allByCarId = serviceService.getAllByCarId(Long.parseLong(carId), userId);
 
         return allByCarId;
@@ -31,9 +31,25 @@ public class ServiceController {
     @RequestMapping(value = "/service", method = RequestMethod.POST)
     public BaseResponse addService(@RequestBody ServiceDTO serviceDTO, OAuth2Authentication auth) throws Exception {
 
-        Long userId = ((UserDetails)auth.getUserAuthentication().getPrincipal()).getId();
+        Long userId = ((UserDetails) auth.getUserAuthentication().getPrincipal()).getId();
 
         serviceService.addService(serviceDTO, userId);
+
+        return new BaseResponse().setSuccessStatus();
+    }
+
+    @RequestMapping(value = "/service/{id}", method = RequestMethod.GET)
+    public ServiceDTO getService(@PathVariable("id") String id, @RequestParam(value = "carId", required = true) String carId, OAuth2Authentication auth) {
+        Long userId = ((UserDetails) auth.getUserAuthentication().getPrincipal()).getId();
+
+        return serviceService.getServiceByIdAndCarId(Long.parseLong(id), Long.parseLong(carId), userId);
+    }
+
+    @RequestMapping(value = "/service/{id}", method = RequestMethod.POST)
+    public BaseResponse updateService(@RequestBody ServiceDTO serviceDTO, @PathVariable("id") String id, @RequestParam(value = "carId", required = true) String carId, OAuth2Authentication auth) {
+        Long userId = ((UserDetails) auth.getUserAuthentication().getPrincipal()).getId();
+
+        serviceService.updateService(serviceDTO);
 
         return new BaseResponse().setSuccessStatus();
     }

@@ -3,6 +3,7 @@ CREATE TABLE CAR (
   user_id NUMBER NOT NULL,
   name VARCHAR(50) NOT NULL,
   picture BLOB,
+  mileage NUMBER(10,2) DEFAULT 0,
   FOREIGN KEY (user_id) REFERENCES USERS (id)
  );
 
